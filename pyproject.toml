@@ -1,0 +1,24 @@
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+src = ["agents", "tools", "pipeline", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors (PEP 8)
+    "W",   # pycodestyle warnings (PEP 8)
+    "F",   # Pyflakes
+    "I",   # isort (import order)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["agents", "tools", "pipeline"]
+
+[tool.ruff.lint.per-file-ignores]
+# Starter template retains long docstrings from the original assignment.
+"project_starter.py" = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"

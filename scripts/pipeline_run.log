@@ -1,0 +1,1284 @@
+/workspace/.venv/lib/python3.14/site-packages/pydantic_ai/agent/__init__.py:414: PydanticAIDeprecationWarning: In v2.0, 'openai:' will resolve to the OpenAI Responses API by default. Use 'openai-chat:' to keep current Chat Completions behavior, or 'openai-responses:' to opt in early.
+  self._model = models.infer_model(model)
+/workspace/project_starter.py:184: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df["col"][row_indexer] = value
+
+Use `df.loc[row_indexer, "col"] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  quotes_df["request_metadata"] = quotes_df["request_metadata"].apply(
+/workspace/project_starter.py:187: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df["col"][row_indexer] = value
+
+Use `df.loc[row_indexer, "col"] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  quotes_df["job_type"] = quotes_df["request_metadata"].apply(lambda x: x.get("job_type", ""))
+/workspace/project_starter.py:188: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df["col"][row_indexer] = value
+
+Use `df.loc[row_indexer, "col"] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  quotes_df["order_size"] = quotes_df["request_metadata"].apply(lambda x: x.get("order_size", ""))
+/workspace/project_starter.py:189: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df["col"][row_indexer] = value
+
+Use `df.loc[row_indexer, "col"] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  quotes_df["event_type"] = quotes_df["request_metadata"].apply(lambda x: x.get("event_type", ""))
+
+========================================================================
+Munder Difflin — Verbose Pipeline Demo
+========================================================================
+Running 2 request(s) at CSV indices: (0, 19)
+Steps per request: Quoting → Inventory → Pricing Review → Pricing → Order Recommendation
+Formal tests: PYTHONPATH=/workspace python tests/test_verbose_pipeline.py
+
+Initializing database...
+
+========================================================================
+RUN 1 (CSV index 0): office manager / small / ceremony
+Date of request: 2025-04-01
+========================================================================
+
+--- CUSTOMER REQUEST (excerpt) ---
+I would like to request the following paper supplies for the ceremony:   - 200 sheets of A4 glossy paper - 100 sheets of heavy cardstock (white) - 100 sheets of colored paper (assorted colors)  I need these supplies delivered by April 15, 2025. Thank you.
+
+========================================================================
+RUN 1 (CSV index 0) — STEP 1: Quoting Agent
+========================================================================
+
+--- INPUT ---
+{
+  "request_text": "I would like to request the following paper supplies for the ceremony: \n\n- 200 sheets of A4 glossy paper\n- 100 sheets of heavy cardstock (white)\n- 100 sheets of colored paper (assorted colors)\n\nI need these supplies delivered by April 15, 2025. Thank you.",
+  "request_date": "2025-04-01",
+  "request_with_date": "I would like to request the following paper supplies for the ceremony: \n\n- 200 sheets of A4 glossy paper\n- 100 sheets of heavy cardstock (white)\n- 100 sheets of colored paper (assorted colors)\n\nI need these supplies delivered by April 15, 2025. Thank you. (Date of request: 2025-04-01)",
+  "metadata": {
+    "job": "office manager",
+    "need_size": "small",
+    "event": "ceremony",
+    "mood": "stressed"
+  }
+}
+
+--- OUTPUT (QuoteResponse) ---
+{
+  "success": true,
+  "error": null,
+  "date_of_request": "2025-04-01",
+  "need_date": "2025-04-15",
+  "items": [
+    {
+      "product_name": "Glossy paper",
+      "quantity_requested": 200,
+      "unit_price": 0.2
+    },
+    {
+      "product_name": "Cardstock",
+      "quantity_requested": 100,
+      "unit_price": 0.15
+    },
+    {
+      "product_name": "Colored paper",
+      "quantity_requested": 100,
+      "unit_price": 0.1
+    }
+  ],
+  "excluded_products": []
+}
+
+✓ Quoting Agent validation PASSED
+
+========================================================================
+RUN 1 (CSV index 0) — STEP 2: Inventory Tool
+========================================================================
+
+--- INPUT (InventoryRequest) ---
+{
+  "need_date": "2025-04-15",
+  "date_of_request": "2025-04-01",
+  "items": [
+    {
+      "product_name": "Glossy paper",
+      "quantity_requested": 200,
+      "unit_price": 0.2
+    },
+    {
+      "product_name": "Cardstock",
+      "quantity_requested": 100,
+      "unit_price": 0.15
+    },
+    {
+      "product_name": "Colored paper",
+      "quantity_requested": 100,
+      "unit_price": 0.1
+    }
+  ]
+}
+
+--- OUTPUT (InventoryResult) ---
+{
+  "need_date": "2025-04-15",
+  "date_of_request": "2025-04-01",
+  "items": [
+    {
+      "product_name": "Glossy paper",
+      "quantity_requested": 200,
+      "unit_price": 0.2,
+      "success": true,
+      "quantity_in_stock": 587,
+      "quantity_to_order": 0,
+      "error": ""
+    },
+    {
+      "product_name": "Cardstock",
+      "quantity_requested": 100,
+      "unit_price": 0.15,
+      "success": true,
+      "quantity_in_stock": 595,
+      "quantity_to_order": 0,
+      "error": ""
+    },
+    {
+      "product_name": "Colored paper",
+      "quantity_requested": 100,
+      "unit_price": 0.1,
+      "success": true,
+      "quantity_in_stock": 788,
+      "quantity_to_order": 0,
+      "error": ""
+    }
+  ]
+}
+
+✓ Inventory Tool validation PASSED
+
+========================================================================
+RUN 1 (CSV index 0) — STEP 3: Pricing Review Agent
+========================================================================
+
+--- INPUT (PricingReviewRequest) ---
+{
+  "quote": {
+    "success": true,
+    "error": null,
+    "date_of_request": "2025-04-01",
+    "need_date": "2025-04-15",
+    "items": [
+      {
+        "product_name": "Glossy paper",
+        "quantity_requested": 200,
+        "unit_price": 0.2
+      },
+      {
+        "product_name": "Cardstock",
+        "quantity_requested": 100,
+        "unit_price": 0.15
+      },
+      {
+        "product_name": "Colored paper",
+        "quantity_requested": 100,
+        "unit_price": 0.1
+      }
+    ],
+    "excluded_products": []
+  }
+}
+
+--- OUTPUT (PricingReviewResponse) ---
+{
+  "success": true,
+  "date_of_request": "2025-04-01",
+  "items": [
+    {
+      "product_name": "Glossy paper",
+      "unit_cost": 0.2,
+      "history_count": 3,
+      "min_unit_price": 0.2,
+      "avg_unit_price": 0.2,
+      "max_unit_price": 0.2,
+      "error": null
+    },
+    {
+      "product_name": "Cardstock",
+      "unit_cost": 0.15,
+      "history_count": 15,
+      "min_unit_price": 0.15,
+      "avg_unit_price": 0.15,
+      "max_unit_price": 0.15,
+      "error": null
+    },
+    {
+      "product_name": "Colored paper",
+      "unit_cost": 0.1,
+      "history_count": 9,
+      "min_unit_price": 0.1,
+      "avg_unit_price": 0.1,
+      "max_unit_price": 0.1,
+      "error": null
+    }
+  ],
+  "error": null
+}
+
+✓ Pricing Review Agent validation PASSED
+
+========================================================================
+RUN 1 (CSV index 0) — STEP 4: Pricing Tool
+========================================================================
+
+--- INPUT (PricingRequest) ---
+{
+  "quote": {
+    "success": true,
+    "error": null,
+    "date_of_request": "2025-04-01",
+    "need_date": "2025-04-15",
+    "items": [
+      {
+        "product_name": "Glossy paper",
+        "quantity_requested": 200,
+        "unit_price": 0.2
+      },
+      {
+        "product_name": "Cardstock",
+        "quantity_requested": 100,
+        "unit_price": 0.15
+      },
+      {
+        "product_name": "Colored paper",
+        "quantity_requested": 100,
+        "unit_price": 0.1
+      }
+    ],
+    "excluded_products": []
+  },
+  "inventory": {
+    "need_date": "2025-04-15",
+    "date_of_request": "2025-04-01",
+    "items": [
+      {
+        "product_name": "Glossy paper",
+        "quantity_requested": 200,
+        "unit_price": 0.2,
+        "success": true,
+        "quantity_in_stock": 587,
+        "quantity_to_order": 0,
+        "error": ""
+      },
+      {
+        "product_name": "Cardstock",
+        "quantity_requested": 100,
+        "unit_price": 0.15,
+        "success": true,
+        "quantity_in_stock": 595,
+        "quantity_to_order": 0,
+        "error": ""
+      },
+      {
+        "product_name": "Colored paper",
+        "quantity_requested": 100,
+        "unit_price": 0.1,
+        "success": true,
+        "quantity_in_stock": 788,
+        "quantity_to_order": 0,
+        "error": ""
+      }
+    ]
+  },
+  "unit_prices": [
+    {
+      "product_name": "Glossy paper",
+      "min_unit_price": 0.2,
+      "avg_unit_price": 0.2,
+      "max_unit_price": 0.2
+    },
+    {
+      "product_name": "Cardstock",
+      "min_unit_price": 0.15,
+      "avg_unit_price": 0.15,
+      "max_unit_price": 0.15
+    },
+    {
+      "product_name": "Colored paper",
+      "min_unit_price": 0.1,
+      "avg_unit_price": 0.1,
+      "max_unit_price": 0.1
+    }
+  ]
+}
+
+--- CONTEXT ---
+cash_balance as of 2025-04-01: $45059.70
+
+--- OUTPUT (PricingResponse) ---
+{
+  "success": true,
+  "date_of_request": "2025-04-01",
+  "need_date": "2025-04-15",
+  "recommendations": [
+    {
+      "strategy": "maximize_profit",
+      "items": [
+        {
+          "product_name": "Glossy paper",
+          "quantity_requested": 200,
+          "quantity_fulfilled": 200,
+          "unit_cost": 0.2,
+          "unit_price": 0.2,
+          "line_revenue": 40.0,
+          "line_acquisition_cost": 0.0,
+          "included": true
+        },
+        {
+          "product_name": "Cardstock",
+          "quantity_requested": 100,
+          "quantity_fulfilled": 100,
+          "unit_cost": 0.15,
+          "unit_price": 0.15,
+          "line_revenue": 15.0,
+          "line_acquisition_cost": 0.0,
+          "included": true
+        },
+        {
+          "product_name": "Colored paper",
+          "quantity_requested": 100,
+          "quantity_fulfilled": 100,
+          "unit_cost": 0.1,
+          "unit_price": 0.1,
+          "line_revenue": 10.0,
+          "line_acquisition_cost": 0.0,
+          "included": true
+        }
+      ],
+      "total_acquisition_cost": 0.0,
+      "total_profit": 65.0,
+      "error": null
+    },
+    {
+      "strategy": "average_pricing",
+      "items": [
+        {
+          "product_name": "Glossy paper",
+          "quantity_requested": 200,
+          "quantity_fulfilled": 200,
+          "unit_cost": 0.2,
+          "unit_price": 0.2,
+          "line_revenue": 40.0,
+          "line_acquisition_cost": 0.0,
+          "included": true
+        },
+        {
+          "product_name": "Cardstock",
+          "quantity_requested": 100,
+          "quantity_fulfilled": 100,
+          "unit_cost": 0.15,
+          "unit_price": 0.15,
+          "line_revenue": 15.0,
+          "line_acquisition_cost": 0.0,
+          "included": true
+        },
+        {
+          "product_name": "Colored paper",
+          "quantity_requested": 100,
+          "quantity_fulfilled": 100,
+          "unit_cost": 0.1,
+          "unit_price": 0.1,
+          "line_revenue": 10.0,
+          "line_acquisition_cost": 0.0,
+          "included": true
+        }
+      ],
+      "total_acquisition_cost": 0.0,
+      "total_profit": 65.0,
+      "error": null
+    },
+    {
+      "strategy": "maximize_turnover",
+      "items": [
+        {
+          "product_name": "Glossy paper",
+          "quantity_requested": 200,
+          "quantity_fulfilled": 200,
+          "unit_cost": 0.2,
+          "unit_price": 0.2,
+          "line_revenue": 40.0,
+          "line_acquisition_cost": 0.0,
+          "included": true
+        },
+        {
+          "product_name": "Cardstock",
+          "quantity_requested": 100,
+          "quantity_fulfilled": 100,
+          "unit_cost": 0.15,
+          "unit_price": 0.15,
+          "line_revenue": 15.0,
+          "line_acquisition_cost": 0.0,
+          "included": true
+        },
+        {
+          "product_name": "Colored paper",
+          "quantity_requested": 100,
+          "quantity_fulfilled": 100,
+          "unit_cost": 0.1,
+          "unit_price": 0.1,
+          "line_revenue": 10.0,
+          "line_acquisition_cost": 0.0,
+          "included": true
+        }
+      ],
+      "total_acquisition_cost": 0.0,
+      "total_profit": 65.0,
+      "error": null
+    }
+  ]
+}
+
+✓ Pricing Tool validation PASSED
+
+========================================================================
+RUN 1 (CSV index 0) — STEP 5: Order Recommendation Agent
+========================================================================
+
+--- INPUT (OrderRecommendationRequest) ---
+{
+  "quote": {
+    "success": true,
+    "error": null,
+    "date_of_request": "2025-04-01",
+    "need_date": "2025-04-15",
+    "items": [
+      {
+        "product_name": "Glossy paper",
+        "quantity_requested": 200,
+        "unit_price": 0.2
+      },
+      {
+        "product_name": "Cardstock",
+        "quantity_requested": 100,
+        "unit_price": 0.15
+      },
+      {
+        "product_name": "Colored paper",
+        "quantity_requested": 100,
+        "unit_price": 0.1
+      }
+    ],
+    "excluded_products": []
+  },
+  "inventory": {
+    "need_date": "2025-04-15",
+    "date_of_request": "2025-04-01",
+    "items": [
+      {
+        "product_name": "Glossy paper",
+        "quantity_requested": 200,
+        "unit_price": 0.2,
+        "success": true,
+        "quantity_in_stock": 587,
+        "quantity_to_order": 0,
+        "error": ""
+      },
+      {
+        "product_name": "Cardstock",
+        "quantity_requested": 100,
+        "unit_price": 0.15,
+        "success": true,
+        "quantity_in_stock": 595,
+        "quantity_to_order": 0,
+        "error": ""
+      },
+      {
+        "product_name": "Colored paper",
+        "quantity_requested": 100,
+        "unit_price": 0.1,
+        "success": true,
+        "quantity_in_stock": 788,
+        "quantity_to_order": 0,
+        "error": ""
+      }
+    ]
+  },
+  "pricing": {
+    "success": true,
+    "date_of_request": "2025-04-01",
+    "need_date": "2025-04-15",
+    "recommendations": [
+      {
+        "strategy": "maximize_profit",
+        "items": [
+          {
+            "product_name": "Glossy paper",
+            "quantity_requested": 200,
+            "quantity_fulfilled": 200,
+            "unit_cost": 0.2,
+            "unit_price": 0.2,
+            "line_revenue": 40.0,
+            "line_acquisition_cost": 0.0,
+            "included": true
+          },
+          {
+            "product_name": "Cardstock",
+            "quantity_requested": 100,
+            "quantity_fulfilled": 100,
+            "unit_cost": 0.15,
+            "unit_price": 0.15,
+            "line_revenue": 15.0,
+            "line_acquisition_cost": 0.0,
+            "included": true
+          },
+          {
+            "product_name": "Colored paper",
+            "quantity_requested": 100,
+            "quantity_fulfilled": 100,
+            "unit_cost": 0.1,
+            "unit_price": 0.1,
+            "line_revenue": 10.0,
+            "line_acquisition_cost": 0.0,
+            "included": true
+          }
+        ],
+        "total_acquisition_cost": 0.0,
+        "total_profit": 65.0,
+        "error": null
+      },
+      {
+        "strategy": "average_pricing",
+        "items": [
+          {
+            "product_name": "Glossy paper",
+            "quantity_requested": 200,
+            "quantity_fulfilled": 200,
+            "unit_cost": 0.2,
+            "unit_price": 0.2,
+            "line_revenue": 40.0,
+            "line_acquisition_cost": 0.0,
+            "included": true
+          },
+          {
+            "product_name": "Cardstock",
+            "quantity_requested": 100,
+            "quantity_fulfilled": 100,
+            "unit_cost": 0.15,
+            "unit_price": 0.15,
+            "line_revenue": 15.0,
+            "line_acquisition_cost": 0.0,
+            "included": true
+          },
+          {
+            "product_name": "Colored paper",
+            "quantity_requested": 100,
+            "quantity_fulfilled": 100,
+            "unit_cost": 0.1,
+            "unit_price": 0.1,
+            "line_revenue": 10.0,
+            "line_acquisition_cost": 0.0,
+            "included": true
+          }
+        ],
+        "total_acquisition_cost": 0.0,
+        "total_profit": 65.0,
+        "error": null
+      },
+      {
+        "strategy": "maximize_turnover",
+        "items": [
+          {
+            "product_name": "Glossy paper",
+            "quantity_requested": 200,
+            "quantity_fulfilled": 200,
+            "unit_cost": 0.2,
+            "unit_price": 0.2,
+            "line_revenue": 40.0,
+            "line_acquisition_cost": 0.0,
+            "included": true
+          },
+          {
+            "product_name": "Cardstock",
+            "quantity_requested": 100,
+            "quantity_fulfilled": 100,
+            "unit_cost": 0.15,
+            "unit_price": 0.15,
+            "line_revenue": 15.0,
+            "line_acquisition_cost": 0.0,
+            "included": true
+          },
+          {
+            "product_name": "Colored paper",
+            "quantity_requested": 100,
+            "quantity_fulfilled": 100,
+            "unit_cost": 0.1,
+            "unit_price": 0.1,
+            "line_revenue": 10.0,
+            "line_acquisition_cost": 0.0,
+            "included": true
+          }
+        ],
+        "total_acquisition_cost": 0.0,
+        "total_profit": 65.0,
+        "error": null
+      }
+    ]
+  },
+  "customer": {
+    "original_request_text": "I would like to request the following paper supplies for the ceremony: \n\n- 200 sheets of A4 glossy paper\n- 100 sheets of heavy cardstock (white)\n- 100 sheets of colored paper (assorted colors)\n\nI need these supplies delivered by April 15, 2025. Thank you.",
+    "job_type": "office manager",
+    "need_size": "small",
+    "event_type": "ceremony",
+    "mood": "stressed"
+  }
+}
+
+--- OUTPUT (OrderRecommendationResponse) ---
+{
+  "success": true,
+  "date_of_request": "2025-04-01",
+  "need_date": "2025-04-15",
+  "recommended_items": [
+    {
+      "product_name": "Glossy paper",
+      "quantity_requested": 200,
+      "quantity_fulfilled": 200,
+      "quantity_in_stock": 587,
+      "quantity_to_order": 0,
+      "unit_cost": 0.2,
+      "unit_price": 0.2,
+      "line_total": 40.0,
+      "included": true
+    },
+    {
+      "product_name": "Cardstock",
+      "quantity_requested": 100,
+      "quantity_fulfilled": 100,
+      "quantity_in_stock": 595,
+      "quantity_to_order": 0,
+      "unit_cost": 0.15,
+      "unit_price": 0.15,
+      "line_total": 15.0,
+      "included": true
+    },
+    {
+      "product_name": "Colored paper",
+      "quantity_requested": 100,
+      "quantity_fulfilled": 100,
+      "quantity_in_stock": 788,
+      "quantity_to_order": 0,
+      "unit_cost": 0.1,
+      "unit_price": 0.1,
+      "line_total": 10.0,
+      "included": true
+    }
+  ],
+  "stock_orders": null,
+  "sales": {
+    "transaction_date": "2025-04-15",
+    "transactions": [
+      {
+        "item_name": "Glossy paper",
+        "transaction_type": "sales",
+        "quantity": 200,
+        "price": 40.0,
+        "transaction_date": "2025-04-15"
+      },
+      {
+        "item_name": "Cardstock",
+        "transaction_type": "sales",
+        "quantity": 100,
+        "price": 15.0,
+        "transaction_date": "2025-04-15"
+      },
+      {
+        "item_name": "Colored paper",
+        "transaction_type": "sales",
+        "quantity": 100,
+        "price": 10.0,
+        "transaction_date": "2025-04-15"
+      }
+    ]
+  },
+  "customer_response": "Thank you for your request for the ceremony supplies. We\u2019re pleased to confirm availability for delivery by April 15, 2025.\n\nHere is your quote breakdown:\n- Glossy paper: 200 sheets at $0.20 each = $40.00\n- Cardstock: 100 sheets at $0.15 each = $15.00\n- Colored paper: 100 sheets at $0.10 each = $10.00\n\nTotal quote amount: $65.00.\n\nWe\u2019ll have everything ready for delivery by your requested date. No requested items were excluded from this quote.",
+  "pricing_justification": "Pricing signals summary: inventory pressure 20.46% >= 15.0% (discount lean); need_size=small (premium lean); mood=stressed (discount lean). For each included line, quantity tactic was driven by request size and band position: Glossy paper (200 units) used the full mid band at $0.20; Cardstock (100 units) used the full mid band at $0.15; Colored paper (100 units) used the full mid band at $0.10. Each line was priced exactly at mid, so no deviation from mid was needed. Final prices respected floor/mid/ceiling for all included lines.",
+  "total_quote_amount": 65.0,
+  "error": null
+}
+
+✓ Order Recommendation Agent validation PASSED
+
+========================================================================
+RUN 2 (CSV index 19): restaurant manager / large / concert
+Date of request: 2025-04-17
+========================================================================
+
+--- CUSTOMER REQUEST (excerpt) ---
+I would like to place a large order for the following paper supplies for our upcoming concert: 5,000 flyers, 2,000 posters, and 10,000 tickets. We need these items delivered by May 15, 2025, to ensure adequate time for distribution and promotion. Thank you!
+
+========================================================================
+RUN 2 (CSV index 19) — STEP 1: Quoting Agent
+========================================================================
+
+--- INPUT ---
+{
+  "request_text": "I would like to place a large order for the following paper supplies for our upcoming concert: 5,000 flyers, 2,000 posters, and 10,000 tickets. We need these items delivered by May 15, 2025, to ensure adequate time for distribution and promotion. Thank you!",
+  "request_date": "2025-04-17",
+  "request_with_date": "I would like to place a large order for the following paper supplies for our upcoming concert: 5,000 flyers, 2,000 posters, and 10,000 tickets. We need these items delivered by May 15, 2025, to ensure adequate time for distribution and promotion. Thank you! (Date of request: 2025-04-17)",
+  "metadata": {
+    "job": "restaurant manager",
+    "need_size": "large",
+    "event": "concert",
+    "mood": "miserable"
+  }
+}
+
+--- OUTPUT (QuoteResponse) ---
+{
+  "success": true,
+  "error": null,
+  "date_of_request": "2025-04-17",
+  "need_date": "2025-05-15",
+  "items": [
+    {
+      "product_name": "Flyers",
+      "quantity_requested": 5000,
+      "unit_price": 0.15
+    },
+    {
+      "product_name": "Poster paper",
+      "quantity_requested": 2000,
+      "unit_price": 0.25
+    }
+  ],
+  "excluded_products": [
+    "tickets"
+  ]
+}
+
+✓ Quoting Agent validation PASSED
+
+========================================================================
+RUN 2 (CSV index 19) — STEP 2: Inventory Tool
+========================================================================
+
+--- INPUT (InventoryRequest) ---
+{
+  "need_date": "2025-05-15",
+  "date_of_request": "2025-04-17",
+  "items": [
+    {
+      "product_name": "Flyers",
+      "quantity_requested": 5000,
+      "unit_price": 0.15
+    },
+    {
+      "product_name": "Poster paper",
+      "quantity_requested": 2000,
+      "unit_price": 0.25
+    }
+  ]
+}
+FUNC (get_supplier_delivery_date): Calculating for qty 5000 from date string '2025-04-17'
+FUNC (get_supplier_delivery_date): Calculating for qty 2000 from date string '2025-04-17'
+
+--- OUTPUT (InventoryResult) ---
+{
+  "need_date": "2025-05-15",
+  "date_of_request": "2025-04-17",
+  "items": [
+    {
+      "product_name": "Flyers",
+      "quantity_requested": 5000,
+      "unit_price": 0.15,
+      "success": true,
+      "quantity_in_stock": 0,
+      "quantity_to_order": 5000,
+      "error": ""
+    },
+    {
+      "product_name": "Poster paper",
+      "quantity_requested": 2000,
+      "unit_price": 0.25,
+      "success": true,
+      "quantity_in_stock": 0,
+      "quantity_to_order": 2000,
+      "error": ""
+    }
+  ]
+}
+
+✓ Inventory Tool validation PASSED
+
+========================================================================
+RUN 2 (CSV index 19) — STEP 3: Pricing Review Agent
+========================================================================
+
+--- INPUT (PricingReviewRequest) ---
+{
+  "quote": {
+    "success": true,
+    "error": null,
+    "date_of_request": "2025-04-17",
+    "need_date": "2025-05-15",
+    "items": [
+      {
+        "product_name": "Flyers",
+        "quantity_requested": 5000,
+        "unit_price": 0.15
+      },
+      {
+        "product_name": "Poster paper",
+        "quantity_requested": 2000,
+        "unit_price": 0.25
+      }
+    ],
+    "excluded_products": [
+      "tickets"
+    ]
+  }
+}
+
+--- OUTPUT (PricingReviewResponse) ---
+{
+  "success": true,
+  "date_of_request": "2025-04-17",
+  "items": [
+    {
+      "product_name": "Flyers",
+      "unit_cost": 0.15,
+      "history_count": 1,
+      "min_unit_price": 0.14,
+      "avg_unit_price": 0.16,
+      "max_unit_price": 0.18,
+      "error": "Insufficient history for compute tool; used default strategy."
+    },
+    {
+      "product_name": "Poster paper",
+      "unit_cost": 0.25,
+      "history_count": 3,
+      "min_unit_price": 0.21,
+      "avg_unit_price": 0.22,
+      "max_unit_price": 0.25,
+      "error": null
+    }
+  ],
+  "error": null
+}
+
+✓ Pricing Review Agent validation PASSED
+
+========================================================================
+RUN 2 (CSV index 19) — STEP 4: Pricing Tool
+========================================================================
+
+--- INPUT (PricingRequest) ---
+{
+  "quote": {
+    "success": true,
+    "error": null,
+    "date_of_request": "2025-04-17",
+    "need_date": "2025-05-15",
+    "items": [
+      {
+        "product_name": "Flyers",
+        "quantity_requested": 5000,
+        "unit_price": 0.15
+      },
+      {
+        "product_name": "Poster paper",
+        "quantity_requested": 2000,
+        "unit_price": 0.25
+      }
+    ],
+    "excluded_products": [
+      "tickets"
+    ]
+  },
+  "inventory": {
+    "need_date": "2025-05-15",
+    "date_of_request": "2025-04-17",
+    "items": [
+      {
+        "product_name": "Flyers",
+        "quantity_requested": 5000,
+        "unit_price": 0.15,
+        "success": true,
+        "quantity_in_stock": 0,
+        "quantity_to_order": 5000,
+        "error": ""
+      },
+      {
+        "product_name": "Poster paper",
+        "quantity_requested": 2000,
+        "unit_price": 0.25,
+        "success": true,
+        "quantity_in_stock": 0,
+        "quantity_to_order": 2000,
+        "error": ""
+      }
+    ]
+  },
+  "unit_prices": [
+    {
+      "product_name": "Flyers",
+      "min_unit_price": 0.14,
+      "avg_unit_price": 0.16,
+      "max_unit_price": 0.18
+    },
+    {
+      "product_name": "Poster paper",
+      "min_unit_price": 0.21,
+      "avg_unit_price": 0.22,
+      "max_unit_price": 0.25
+    }
+  ]
+}
+
+--- CONTEXT ---
+cash_balance as of 2025-04-17: $45059.70
+
+--- OUTPUT (PricingResponse) ---
+{
+  "success": true,
+  "date_of_request": "2025-04-17",
+  "need_date": "2025-05-15",
+  "recommendations": [
+    {
+      "strategy": "maximize_profit",
+      "items": [
+        {
+          "product_name": "Flyers",
+          "quantity_requested": 5000,
+          "quantity_fulfilled": 5000,
+          "unit_cost": 0.15,
+          "unit_price": 0.18,
+          "line_revenue": 900.0,
+          "line_acquisition_cost": 750.0,
+          "included": true
+        },
+        {
+          "product_name": "Poster paper",
+          "quantity_requested": 2000,
+          "quantity_fulfilled": 2000,
+          "unit_cost": 0.25,
+          "unit_price": 0.25,
+          "line_revenue": 500.0,
+          "line_acquisition_cost": 500.0,
+          "included": true
+        }
+      ],
+      "total_acquisition_cost": 1250.0,
+      "total_profit": 150.0,
+      "error": null
+    },
+    {
+      "strategy": "average_pricing",
+      "items": [
+        {
+          "product_name": "Flyers",
+          "quantity_requested": 5000,
+          "quantity_fulfilled": 5000,
+          "unit_cost": 0.15,
+          "unit_price": 0.16,
+          "line_revenue": 800.0,
+          "line_acquisition_cost": 750.0,
+          "included": true
+        },
+        {
+          "product_name": "Poster paper",
+          "quantity_requested": 2000,
+          "quantity_fulfilled": 2000,
+          "unit_cost": 0.25,
+          "unit_price": 0.22,
+          "line_revenue": 440.0,
+          "line_acquisition_cost": 500.0,
+          "included": true
+        }
+      ],
+      "total_acquisition_cost": 1250.0,
+      "total_profit": -10.0,
+      "error": null
+    },
+    {
+      "strategy": "maximize_turnover",
+      "items": [
+        {
+          "product_name": "Flyers",
+          "quantity_requested": 5000,
+          "quantity_fulfilled": 5000,
+          "unit_cost": 0.15,
+          "unit_price": 0.14,
+          "line_revenue": 700.0000000000001,
+          "line_acquisition_cost": 750.0,
+          "included": true
+        },
+        {
+          "product_name": "Poster paper",
+          "quantity_requested": 2000,
+          "quantity_fulfilled": 2000,
+          "unit_cost": 0.25,
+          "unit_price": 0.21,
+          "line_revenue": 420.0,
+          "line_acquisition_cost": 500.0,
+          "included": true
+        }
+      ],
+      "total_acquisition_cost": 1250.0,
+      "total_profit": -129.9999999999999,
+      "error": null
+    }
+  ]
+}
+
+✓ Pricing Tool validation PASSED
+
+========================================================================
+RUN 2 (CSV index 19) — STEP 5: Order Recommendation Agent
+========================================================================
+
+--- INPUT (OrderRecommendationRequest) ---
+{
+  "quote": {
+    "success": true,
+    "error": null,
+    "date_of_request": "2025-04-17",
+    "need_date": "2025-05-15",
+    "items": [
+      {
+        "product_name": "Flyers",
+        "quantity_requested": 5000,
+        "unit_price": 0.15
+      },
+      {
+        "product_name": "Poster paper",
+        "quantity_requested": 2000,
+        "unit_price": 0.25
+      }
+    ],
+    "excluded_products": [
+      "tickets"
+    ]
+  },
+  "inventory": {
+    "need_date": "2025-05-15",
+    "date_of_request": "2025-04-17",
+    "items": [
+      {
+        "product_name": "Flyers",
+        "quantity_requested": 5000,
+        "unit_price": 0.15,
+        "success": true,
+        "quantity_in_stock": 0,
+        "quantity_to_order": 5000,
+        "error": ""
+      },
+      {
+        "product_name": "Poster paper",
+        "quantity_requested": 2000,
+        "unit_price": 0.25,
+        "success": true,
+        "quantity_in_stock": 0,
+        "quantity_to_order": 2000,
+        "error": ""
+      }
+    ]
+  },
+  "pricing": {
+    "success": true,
+    "date_of_request": "2025-04-17",
+    "need_date": "2025-05-15",
+    "recommendations": [
+      {
+        "strategy": "maximize_profit",
+        "items": [
+          {
+            "product_name": "Flyers",
+            "quantity_requested": 5000,
+            "quantity_fulfilled": 5000,
+            "unit_cost": 0.15,
+            "unit_price": 0.18,
+            "line_revenue": 900.0,
+            "line_acquisition_cost": 750.0,
+            "included": true
+          },
+          {
+            "product_name": "Poster paper",
+            "quantity_requested": 2000,
+            "quantity_fulfilled": 2000,
+            "unit_cost": 0.25,
+            "unit_price": 0.25,
+            "line_revenue": 500.0,
+            "line_acquisition_cost": 500.0,
+            "included": true
+          }
+        ],
+        "total_acquisition_cost": 1250.0,
+        "total_profit": 150.0,
+        "error": null
+      },
+      {
+        "strategy": "average_pricing",
+        "items": [
+          {
+            "product_name": "Flyers",
+            "quantity_requested": 5000,
+            "quantity_fulfilled": 5000,
+            "unit_cost": 0.15,
+            "unit_price": 0.16,
+            "line_revenue": 800.0,
+            "line_acquisition_cost": 750.0,
+            "included": true
+          },
+          {
+            "product_name": "Poster paper",
+            "quantity_requested": 2000,
+            "quantity_fulfilled": 2000,
+            "unit_cost": 0.25,
+            "unit_price": 0.22,
+            "line_revenue": 440.0,
+            "line_acquisition_cost": 500.0,
+            "included": true
+          }
+        ],
+        "total_acquisition_cost": 1250.0,
+        "total_profit": -10.0,
+        "error": null
+      },
+      {
+        "strategy": "maximize_turnover",
+        "items": [
+          {
+            "product_name": "Flyers",
+            "quantity_requested": 5000,
+            "quantity_fulfilled": 5000,
+            "unit_cost": 0.15,
+            "unit_price": 0.14,
+            "line_revenue": 700.0000000000001,
+            "line_acquisition_cost": 750.0,
+            "included": true
+          },
+          {
+            "product_name": "Poster paper",
+            "quantity_requested": 2000,
+            "quantity_fulfilled": 2000,
+            "unit_cost": 0.25,
+            "unit_price": 0.21,
+            "line_revenue": 420.0,
+            "line_acquisition_cost": 500.0,
+            "included": true
+          }
+        ],
+        "total_acquisition_cost": 1250.0,
+        "total_profit": -129.9999999999999,
+        "error": null
+      }
+    ]
+  },
+  "customer": {
+    "original_request_text": "I would like to place a large order for the following paper supplies for our upcoming concert: 5,000 flyers, 2,000 posters, and 10,000 tickets. We need these items delivered by May 15, 2025, to ensure adequate time for distribution and promotion. Thank you!",
+    "job_type": "restaurant manager",
+    "need_size": "large",
+    "event_type": "concert",
+    "mood": "miserable"
+  }
+}
+
+--- OUTPUT (OrderRecommendationResponse) ---
+{
+  "success": true,
+  "date_of_request": "2025-04-17",
+  "need_date": "2025-05-15",
+  "recommended_items": [
+    {
+      "product_name": "Flyers",
+      "quantity_requested": 5000,
+      "quantity_fulfilled": 5000,
+      "quantity_in_stock": 0,
+      "quantity_to_order": 5000,
+      "unit_cost": 0.15,
+      "unit_price": 0.14,
+      "line_total": 700.0,
+      "included": true
+    },
+    {
+      "product_name": "Poster paper",
+      "quantity_requested": 2000,
+      "quantity_fulfilled": 2000,
+      "quantity_in_stock": 0,
+      "quantity_to_order": 2000,
+      "unit_cost": 0.25,
+      "unit_price": 0.21,
+      "line_total": 420.0,
+      "included": true
+    }
+  ],
+  "stock_orders": {
+    "transaction_date": "2025-04-17",
+    "transactions": [
+      {
+        "item_name": "Flyers",
+        "transaction_type": "stock_orders",
+        "quantity": 5000,
+        "price": 750.0,
+        "transaction_date": "2025-04-17"
+      },
+      {
+        "item_name": "Poster paper",
+        "transaction_type": "stock_orders",
+        "quantity": 2000,
+        "price": 500.0,
+        "transaction_date": "2025-04-17"
+      }
+    ]
+  },
+  "sales": {
+    "transaction_date": "2025-05-15",
+    "transactions": [
+      {
+        "item_name": "Flyers",
+        "transaction_type": "sales",
+        "quantity": 5000,
+        "price": 700.0,
+        "transaction_date": "2025-05-15"
+      },
+      {
+        "item_name": "Poster paper",
+        "transaction_type": "sales",
+        "quantity": 2000,
+        "price": 420.0,
+        "transaction_date": "2025-05-15"
+      }
+    ]
+  },
+  "customer_response": "Thank you for your order for your upcoming concert. We\u2019re pleased to support your large promotional need and can deliver everything by May 15, 2025.\n\nHere\u2019s the itemized quote:\n- Flyers: 5,000 units at $0.14 each = $700.00\n- Poster paper: 2,000 units at $0.21 each = $420.00\n\nTotal quote amount: $1,120.00\n\nPlease note that the requested tickets could not be quoted, so the total above covers only the items listed here.",
+  "pricing_justification": "Pricing signals summary: need_size=large (discount lean); event_type=concert (discount lean); mood=miserable (discount lean). \n- Flyers: quantity 5000 favors premium relative to small orders, but the dominant signals were discount-leaning. Priced at $0.14 vs mid $0.16 (floor $0.14, ceiling $0.18). Primary driver: concert event plus miserable mood \u2192 discount lean below mid.\n- Poster paper: quantity 2000 is above the small-order threshold but still not at the largest tier, and discount-leaning signals dominated. Priced at $0.21 vs mid $0.22 (floor $0.21, ceiling $0.25). Primary driver: concert event plus miserable mood \u2192 discount lean below mid.",
+  "total_quote_amount": 1120.0,
+  "error": null
+}
+
+✓ Order Recommendation Agent validation PASSED
+
+========================================================================
+SUMMARY
+========================================================================
+
+Run 1 (CSV index 0, ceremony): FULL PIPELINE
+  Passed: quoting, inventory, pricing_review, pricing, order_recommendation
+
+Run 2 (CSV index 19, concert): FULL PIPELINE
+  Passed: quoting, inventory, pricing_review, pricing, order_recommendation
